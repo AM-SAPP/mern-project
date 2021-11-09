@@ -1,11 +1,12 @@
 const Product = require('../models/productModel');
 const ErrorHandler = require('../utils/errorHandler');
-const catchAsyncError = require('../middleware/catchAsyncError');
+const catchAsyncErrors = require('../middleware/catchAsyncErrors');
 const ApiFeatures = require('../utils/apifeatures');
 
 // Create Product - Admin
 
-exports.createProduct = catchAsyncError(async (req,res,next)=>{
+exports.createProduct = catchAsyncErrors(async (req,res,next)=>{
+        req.body.user = req.user.id;
         const product = await Product.create(req.body);
         res.status(200).json({
             success: true,
@@ -16,7 +17,7 @@ exports.createProduct = catchAsyncError(async (req,res,next)=>{
 
 
 // Get all products
-exports.getAllProducts = catchAsyncError(async (req,res)=>{
+exports.getAllProducts = catchAsyncErrors(async (req,res)=>{
 
     const resultPerPage = 5;
     const productCount = await Product.countDocuments();
@@ -33,7 +34,7 @@ exports.getAllProducts = catchAsyncError(async (req,res)=>{
 // Get single Product by Id
 
 
-exports.getProductDetail = catchAsyncError(async (req,res,next)=>{
+exports.getProductDetail = catchAsyncErrors(async (req,res,next)=>{
     const product = await Product.findById(req.params.id);
 
     if(!product){
@@ -48,7 +49,7 @@ exports.getProductDetail = catchAsyncError(async (req,res,next)=>{
 })
 
 // Update product --Admin
-exports.updateProduct = catchAsyncError(async (req,res,next)=>{
+exports.updateProduct = catchAsyncErrors(async (req,res,next)=>{
     let product = await Product.findById(req.params.id);
 
     if(!product){
@@ -70,7 +71,7 @@ exports.updateProduct = catchAsyncError(async (req,res,next)=>{
 
 // Delete Product --Admin
 
-exports.deleteProduct = catchAsyncError(async (req,res)=>{
+exports.deleteProduct = catchAsyncErrors(async (req,res)=>{
 
 
     let product = await Product.findById(req.params.id);
