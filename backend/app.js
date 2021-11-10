@@ -14,7 +14,7 @@ const app = express();
 
 
 app.use(express.json());
-app.use(cookieParser({secret : process.env.COOKIE_SECRET}))
+app.use(cookieParser())
 
 app.use('/api/v1',product);
 app.use('/api/v1',user);
